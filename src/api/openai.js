@@ -11,7 +11,7 @@ export const gerarMensagemPositiva = async () => {
       messages: [
         {
           role: "user",
-          content: "Escreva uma mensagem curta, doce, única e positiva para animar minha namorada. Seja fofa, gentil e criativa. Gere a mensagem como se fosse um namorado apaixonado. Use emojis para deixar mais carinhoso. A mensagem deve ser original e não copiar de outros lugares.coloque a mensagem entre aspas duplas.",
+          content: "Escreva uma mensagem curta, doce, única e positiva para animar minha namorada. Seja fofa, gentil e criativa. Gere a mensagem como se fosse um namorado apaixonado. Use emojis para deixar mais carinhoso. A mensagem deve ser original e não copiar de outros lugares.coloque a mensagem entre aspas duplas.  sempre comece com 'Oi Laís' e termine com 'Te amo muito! 💖'.",
         },
       ],
       // Você pode adicionar temperature, max_tokens etc aqui se quiser
