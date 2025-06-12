@@ -11,7 +11,7 @@ export const gerarMensagemPositiva = async () => {
       messages: [
         {
           role: "user",
-          content: "Escreva uma mensagem curta, doce e positiva para animar minha namorada. Seja fofa e gentil.",
+          content: "Escreva uma mensagem curta, doce, única e positiva para animar minha namorada. Seja fofa, gentil e criativa. Retorne apenas a mensagem, sem introduções ou explicações.",
         },
       ],
       // Você pode adicionar temperature, max_tokens etc aqui se quiser
