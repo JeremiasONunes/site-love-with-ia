@@ -1,26 +1,39 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { gerarMensagemPositiva } from "./api/openai";
 import { motion as Motion } from "framer-motion";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function App() {
   const [mensagem, setMensagem] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [temporizador, setTemporizador] = useState(0);
 
-  // Função para extrair a última string entre aspas
+  const imagens = [
+    "/imagens/foto1.jpg",
+    "/imagens/foto2.jpg",
+    "/imagens/foto4.jpg",
+    "/imagens/foto6.jpg",
+    "/imagens/foto7.jpg",
+    "/imagens/foto8.jpg",
+    "/imagens/foto9.jpg",
+    "/imagens/foto10.jpg",
+    "/imagens/foto11.jpg",
+    // adicione mais caminhos se quiser
+  ];
+
   function extrairUltimaMensagemEntreAspas(texto) {
     const regex = /"([^"]+)"/g;
     let resultado = null;
     let match;
-
     while ((match = regex.exec(texto)) !== null) {
-      resultado = match[1]; // atualiza para a última ocorrência
+      resultado = match[1];
     }
-
     return resultado || texto;
   }
 
-  // Função para gerar mensagem
   const gerar = async () => {
     if (temporizador > 0) return;
 
@@ -29,8 +42,7 @@ export default function App() {
       const textoCompleto = await gerarMensagemPositiva();
       const fraseExtraida = extrairUltimaMensagemEntreAspas(textoCompleto);
       setMensagem(fraseExtraida);
-      setTemporizador(15); // inicia cooldown
-      // eslint-disable-next-line no-unused-vars
+      setTemporizador(15);
     } catch (error) {
       setMensagem("Ops! Algo deu errado, tente novamente.");
     } finally {
@@ -38,7 +50,6 @@ export default function App() {
     }
   };
 
-  // Contador regressivo do temporizador
   useEffect(() => {
     if (temporizador === 0) return;
     const interval = setInterval(() => {
@@ -78,16 +89,54 @@ export default function App() {
       </button>
 
       {mensagem && (
-        <Motion.div
-          key={mensagem}
-          className="mt-6 sm:mt-10 w-full max-w-sm sm:max-w-md bg-white rounded-xl shadow-lg p-4 sm:p-6 text-center text-pink-700 text-base sm:text-lg font-medium select-text"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          {mensagem}
-        </Motion.div>
+        <div className="w-full max-w-sm sm:max-w-md flex flex-col items-center mt-6 sm:mt-10">
+          <div className="w-full mb-4 rounded-2xl overflow-hidden">
+            <Slider
+              dots={true}
+              infinite={true}
+              speed={800}
+              slidesToShow={1}
+              slidesToScroll={1}
+              autoplay={true}
+              autoplaySpeed={1000} // 5 segundos entre slides
+              pauseOnHover={true}
+              arrows={false}
+              className="shadow-none mb-4 rounded-2xl" // Removendo sombra/borda do slider
+              responsive={[
+                {
+                  breakpoint: 640,
+                  settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                  },
+                },
+              ]}
+            >
+              {imagens.map((src, index) => (
+                <div key={index} className="flex items-center justify-center">
+                  <img
+                    src={src}
+                    alt={`Foto ${index + 1}`}
+                    className="w-full h-64 sm:h-80 object-cover rounded-xl"
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+
+          <Motion.div
+            key={mensagem}
+            className=" pt-8 w-full bg-white rounded-xl shadow-lg p-4 sm:p-6 text-center text-pink-700 text-base sm:text-lg font-medium select-text"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            {mensagem}
+          </Motion.div>
+        </div>
+
       )}
+
       <Motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
