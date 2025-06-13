@@ -132,7 +132,7 @@ export default function App() {
               slidesToShow={1}
               slidesToScroll={1}
               autoplay={true}
-              autoplaySpeed={1000}
+              autoplaySpeed={2500}
               pauseOnHover={true}
               arrows={false}
               className="shadow-none mb-4 rounded-2xl"
@@ -147,11 +147,11 @@ export default function App() {
               ]}
             >
               {imagens.map((src, index) => (
-                <div key={index} className="flex items-center justify-center">
+                <div key={index} className="flex items-center justify-center rounded-2xl overflow-hidden">
                   <img
                     src={src}
                     alt={`Foto ${index + 1}`}
-                    className="w-full h-64 sm:h-80 object-cover rounded-xl"
+                    className="w-full h-4 sm:h-80 object-cover rounded-2xl"
                   />
                 </div>
               ))}
@@ -160,7 +160,7 @@ export default function App() {
 
           <Motion.div
             key={mensagem}
-            className="pt-8 w-full bg-white rounded-xl shadow-lg p-4 sm:p-6 text-center text-pink-700 text-base sm:text-lg font-medium select-text"
+            className=" mt-8 pt-8 w-full bg-white rounded-xl shadow-lg p-4 sm:p-6 text-center text-pink-700 text-base sm:text-lg font-medium select-text"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
