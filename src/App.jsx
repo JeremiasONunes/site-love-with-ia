@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
-import { gerarMensagemPositiva } from "./api/openai";
+import { useState, useEffect, useRef } from "react";
 import { motion as Motion } from "framer-motion";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { gerarMensagemPositiva } from "./api/openai";
+import { MdOutlinePlayCircleFilled } from "react-icons/md";
+import { HiMiniPause } from "react-icons/hi2";
 
 export default function App() {
   const [mensagem, setMensagem] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [temporizador, setTemporizador] = useState(0);
+  const [tocando, setTocando] = useState(false);
+  const audioRef = useRef(null);
 
   const imagens = [
     "/imagens/foto1.jpg",
@@ -21,7 +25,6 @@ export default function App() {
     "/imagens/foto9.jpg",
     "/imagens/foto10.jpg",
     "/imagens/foto11.jpg",
-    // adicione mais caminhos se quiser
   ];
 
   function extrairUltimaMensagemEntreAspas(texto) {
@@ -36,7 +39,6 @@ export default function App() {
 
   const gerar = async () => {
     if (temporizador > 0) return;
-
     setCarregando(true);
     try {
       const textoCompleto = await gerarMensagemPositiva();
@@ -61,16 +63,48 @@ export default function App() {
     return () => clearInterval(interval);
   }, [temporizador]);
 
+  useEffect(() => {
+    audioRef.current = new Audio("/music/mensagem-para-lais.mp3");
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.5;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (tocando) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(() => {});
+    }
+    setTocando(!tocando);
+  };
+
   return (
     <div className="min-h-screen bg-pink-100 flex flex-col items-center justify-center p-4 sm:p-6">
       <Motion.h1
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pink-600 mb-6 sm:mb-8 text-center select-none"
+        className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-pink-600 mb-4 text-center select-none"
       >
         💖 Mensagens para Você Laís de seu namorado Jeremias O Nunes 💖
       </Motion.h1>
+      <p className="mb-6 px-4 py-2 text-2xl  text-pink-600 font-semibold ">Essa musica me lembra você meu amor</p>
+      <p className="mb-6 px-4 py-2 text-2xl  text-pink-600 font-semibold ">Aperte o play</p>
+      {/* Botão de música */}
+      <button
+        onClick={togglePlay}
+        className="mb-6 px-4 py-2 text-4xl  text-pink-600 font-semibold hover:text-pink-200 transition"
+      >
+        {tocando ? <HiMiniPause /> : <MdOutlinePlayCircleFilled />}
+      </button>
 
       <button
         onClick={gerar}
@@ -98,10 +132,10 @@ export default function App() {
               slidesToShow={1}
               slidesToScroll={1}
               autoplay={true}
-              autoplaySpeed={1000} // 5 segundos entre slides
+              autoplaySpeed={1000}
               pauseOnHover={true}
               arrows={false}
-              className="shadow-none mb-4 rounded-2xl" // Removendo sombra/borda do slider
+              className="shadow-none mb-4 rounded-2xl"
               responsive={[
                 {
                   breakpoint: 640,
@@ -126,7 +160,7 @@ export default function App() {
 
           <Motion.div
             key={mensagem}
-            className=" pt-8 w-full bg-white rounded-xl shadow-lg p-4 sm:p-6 text-center text-pink-700 text-base sm:text-lg font-medium select-text"
+            className="pt-8 w-full bg-white rounded-xl shadow-lg p-4 sm:p-6 text-center text-pink-700 text-base sm:text-lg font-medium select-text"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -134,7 +168,6 @@ export default function App() {
             {mensagem}
           </Motion.div>
         </div>
-
       )}
 
       <Motion.p
@@ -148,6 +181,8 @@ export default function App() {
         Como desenvolvedor e, principalmente, como seu namorado, eu não poderia deixar de criar uma página só pra você.
         Essa é a minha forma de dizer: <strong>você é tudo pra mim</strong>. ✨
       </Motion.p>
+
+      
     </div>
   );
 }
