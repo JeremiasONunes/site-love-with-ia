@@ -96,8 +96,8 @@ export default function App() {
       >
         💖 Mensagens para Você Laís de seu namorado Jeremias O Nunes 💖
       </Motion.h1>
-      <p className="mb-6 px-4 py-2 text-2xl  text-pink-600 font-semibold ">Essa musica me lembra você meu amor</p>
-      <p className="mb-6 px-4 py-2 text-2xl  text-pink-600 font-semibold ">Aperte o play</p>
+      <p className=" px-4   text-pink-600 font-semibold ">Essa musica me lembra você meu amor</p>
+      <p className=" px-4   text-pink-600 font-semibold ">Aperte o play</p>
       {/* Botão de música */}
       <button
         onClick={togglePlay}
