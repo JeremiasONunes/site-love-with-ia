@@ -151,7 +151,7 @@ export default function App() {
                   <img
                     src={src}
                     alt={`Foto ${index + 1}`}
-                    className="w-full h-4 sm:h-80 object-cover rounded-2xl"
+                    className="w-full h-74 sm:h-80 object-cover rounded-2xl"
                   />
                 </div>
               ))}
